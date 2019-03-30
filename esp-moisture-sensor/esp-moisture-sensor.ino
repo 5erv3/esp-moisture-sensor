@@ -5,8 +5,8 @@
 // uncomment logging when not needed
 #define LOGGING  1
 
-#define TIME_SLEEPTIME_S          3600
-#define TIME_FACTOR_US_TO_S       (1000*1000)
+#define TIME_SLEEPTIME_S          3600UL
+#define TIME_FACTOR_US_TO_S       (1000UL*1000UL)
 #define WIFI_MAX_CONNECT_TIME_SEC 30
 #define MQTT_RECONNECT_ATTEMPTS   3
 
@@ -36,11 +36,10 @@ void setup() {
   client.setServer(mqtt_server, mqtt_port);
 }
 
-int deepsleep(long sleeptime_us = TIME_FACTOR_US_TO_S * TIME_SLEEPTIME_S){
-  sprintf(buf, "Going to deepsleep for %d seconds...", sleeptime_us/TIME_FACTOR_US_TO_S);
+void deepsleep(int sleeptime = TIME_SLEEPTIME_S){
+  sprintf(buf, "Going to deepsleep for %d seconds...", sleeptime);
   LOG(buf);
-
-  esp_deep_sleep(sleeptime_us);
+  esp_deep_sleep(TIME_FACTOR_US_TO_S * sleeptime);
   esp_deep_sleep_start();
 }
 
