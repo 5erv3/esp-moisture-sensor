@@ -1,0 +1,13 @@
+#ifndef _CONFIG_H_
+#define _CONFIG_H_
+
+const char* wifi_ssid = "WIFI_SSID_HERE";
+const char* wifi_password = "WIFI_PASSWORD_HERE";
+
+const char* mqtt_server = "192.168.0.0";
+const int   mqtt_port = 1883;
+const char* mqtt_topic = "gardener/moistureraw";
+
+const int moistureSensPin = 36;
+
+#endif
