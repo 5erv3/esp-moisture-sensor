@@ -28,6 +28,8 @@ void LOG(const char* logstring, bool newline = true){
 
 void setup() {
   pinMode(moistureSensPin, INPUT);
+  pinMode(voltageSupplyPin, OUTPUT);
+  digitalWrite(voltageSupplyPin, 1);
 #if LOGGING
   Serial.begin(115200);
 #endif
@@ -92,14 +94,24 @@ int getMoisture(){
 }
 
 void loop() {
+  int moisture = 0;
   
   if (!client.connected()) {
     reconnect();
   }
   client.loop();
 
-  sprintf(buf, "%d", getMoisture());
-
+  moisture = getMoisture();
+  sprintf(buf, "Raw sensor value = %d", moisture);
+  LOG(buf);
+ 
+  sprintf(buf, "%d", moisture);
   client.publish(mqtt_topic, buf);
+
+  sprintf(buf, "published %d to topic %s", moisture, mqtt_topic);
+  LOG(buf);
+
+  digitalWrite(voltageSupplyPin, 0);
+  
   deepsleep();
 }
