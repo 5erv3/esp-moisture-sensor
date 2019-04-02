@@ -26,18 +26,6 @@ void LOG(const char* logstring, bool newline = true){
   #endif
 }
 
-void setup() {
-  pinMode(moistureSensPin, INPUT);
-  pinMode(voltageSupplyPin, OUTPUT);
-  digitalWrite(voltageSupplyPin, 1);
-#if LOGGING
-  Serial.begin(115200);
-#endif
-  
-  setup_wifi();
-  client.setServer(mqtt_server, mqtt_port);
-}
-
 void deepsleep(int sleeptime = TIME_SLEEPTIME_S){
   sprintf(buf, "Going to deepsleep for %d seconds...", sleeptime);
   LOG(buf);
@@ -69,6 +57,18 @@ void setup_wifi() {
   LOG("");
 }
 
+void setup() {
+  pinMode(moistureSensPin, INPUT);
+  pinMode(voltageSupplyPin, OUTPUT);
+  digitalWrite(voltageSupplyPin, 1);
+#if LOGGING
+  Serial.begin(115200);
+#endif
+  
+  setup_wifi();
+  client.setServer(mqtt_server, mqtt_port);
+}
+
 void reconnect() {
   reconnect_counter = 0;
   while (!client.connected()) {
@@ -90,11 +90,22 @@ void reconnect() {
 }
 
 int getMoisture(){
-  return analogRead(moistureSensPin);
+  uint64_t average = 0;
+  int count = 20;
+  int i;
+  
+  for(i=0; i<count; i++){
+    average += analogRead(moistureSensPin);
+  }
+  
+  return (int) average/count;
 }
 
 void loop() {
   int moisture = 0;
+  
+  // wait for voltages to be settled
+  delay(10 * 1000);
   
   if (!client.connected()) {
     reconnect();
@@ -108,10 +119,14 @@ void loop() {
   sprintf(buf, "%d", moisture);
   client.publish(mqtt_topic, buf);
 
+  client.loop();
+
   sprintf(buf, "published %d to topic %s", moisture, mqtt_topic);
   LOG(buf);
 
   digitalWrite(voltageSupplyPin, 0);
-  
+
+  delay(1000);
+
   deepsleep();
 }
