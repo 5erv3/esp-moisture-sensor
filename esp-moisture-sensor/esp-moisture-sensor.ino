@@ -93,19 +93,28 @@ int getMoisture(){
   uint64_t average = 0;
   int count = 20;
   int i;
+  int maxval=0, minval=4095;
+  int value;
   
   for(i=0; i<count; i++){
-    average += analogRead(moistureSensPin);
+    value = analogRead(moistureSensPin);
+    average += value;
+    if (maxval < value){
+      maxval = value;
+    }
+    if (minval > value){
+      minval = value;
+    }
   }
+
+  average -= minval;
+  average -= maxval;
   
-  return (int) average/count;
+  return (int) average/ (count - 2);
 }
 
 void loop() {
   int moisture = 0;
-  
-  // wait for voltages to be settled
-  delay(10 * 1000);
   
   if (!client.connected()) {
     reconnect();
@@ -113,6 +122,8 @@ void loop() {
   client.loop();
 
   moisture = getMoisture();
+  digitalWrite(voltageSupplyPin, 0);
+  
   sprintf(buf, "Raw sensor value = %d", moisture);
   LOG(buf);
  
@@ -123,8 +134,6 @@ void loop() {
 
   sprintf(buf, "published %d to topic %s", moisture, mqtt_topic);
   LOG(buf);
-
-  digitalWrite(voltageSupplyPin, 0);
 
   delay(1000);
 
