@@ -7,7 +7,7 @@
 
 #define TIME_SLEEPTIME_S          3600UL
 #define TIME_FACTOR_US_TO_S       (1000UL*1000UL)
-#define WIFI_MAX_CONNECT_TIME_SEC 30
+#define WIFI_MAX_CONNECT_TIME_SEC 60
 #define MQTT_RECONNECT_ATTEMPTS   3
 
 WiFiClient espClient;
