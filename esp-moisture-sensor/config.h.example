@@ -9,5 +9,6 @@ const int   mqtt_port = 1883;
 const char* mqtt_topic = "gardener/moistureraw";
 
 const int moistureSensPin = 36;
+const int voltageSupplyPin = 13;
 
 #endif
