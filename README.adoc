@@ -9,3 +9,13 @@ An ESP-Powered moisture sensor for plants.
 * Select the correct board in IDE
 * Copy config.h.example to config.h and modify the neccessary values
 * Upload and start!
+
+== Overview
+
+*Notes:*
+
+* I am currently using a moisture sensor with resistive sensitivity, because the capacitive ones need >3.3V to operate.
+* The power for the soil moisture sensor is delivered through a GPIO of the ESP32 to save power when not measuring.
+* With the currently used battery in a bad WiFi environment and hourly moisture updates I got through 7 months without recharging the battery.
+
+image::img/overview.png[]
