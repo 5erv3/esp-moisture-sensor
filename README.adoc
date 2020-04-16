@@ -1,6 +1,8 @@
 = ESP Moisture Sensor for Plants
 
-An ESP-Powered moisture sensor for plants. 
+An ESP-Powered moisture sensor for plants.
+
+Also checkout my other project https://github.com/5erv3/esp-gardener[ESP gardener] for automatic watering.
 
 == Installation
 
@@ -19,3 +21,4 @@ An ESP-Powered moisture sensor for plants.
 * With the currently used battery in a bad WiFi environment and hourly moisture updates I got through 7 months without recharging the battery.
 
 image::img/overview.png[]
+
