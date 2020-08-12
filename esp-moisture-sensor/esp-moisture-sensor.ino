@@ -73,7 +73,7 @@ void reconnect() {
   reconnect_counter = 0;
   while (!client.connected()) {
     LOG("Attempting MQTT connection...");
-    if (client.connect("ESP8266Client")) {
+    if (client.connect("ESP8266Client_moisture")) {
       LOG("connected", true);
     } else {
       reconnect_counter++;
