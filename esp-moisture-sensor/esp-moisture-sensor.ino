@@ -39,14 +39,13 @@ void setup_wifi() {
   sprintf(buf, "Connecting to %s...", wifi_ssid);
   LOG(buf);
 
-  WiFi.begin(wifi_ssid, wifi_password);
-
   reconnect_counter = 0;
 
   while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
+    WiFi.begin(wifi_ssid, wifi_password);
     reconnect_counter ++;
-    if (reconnect_counter >= WIFI_MAX_CONNECT_TIME_SEC){
+    delay(10000);
+    if (reconnect_counter*10 >= WIFI_MAX_CONNECT_TIME_SEC){
       LOG("ERROR: WiFi connection counter expired");
       deepsleep();
     }
